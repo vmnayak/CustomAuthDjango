@@ -1,0 +1,176 @@
+{% extends 'auth_base.html' %}
+{% block title %}Register{% endblock %}
+{% block heading %}<i class="fa fa-user-lock"></i> Register{% endblock %}
+{% block content %}
+
+    <!-- Error container for displaying all validation messages at once -->
+    <div id="error-summary" class="alert alert-danger text-center d-none"></div>
+
+    <form id="register-form" method="POST" novalidate>
+        {% csrf_token %}
+
+        <!-- Username Field -->
+        <div class="mb-3">
+            <label class="form-label">Username</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                {{ form.username }}
+                {% if form.username.help_text %}
+                    <span class="input-group-text" data-bs-toggle="tooltip" title="{{ form.username.help_text }}">
+                        <i class="fa fa-info-circle text-primary"></i>
+                    </span>
+                {% endif %}
+            </div>
+            <div class="text-danger error-message"></div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                {{ form.email }}
+                {% if form.email.help_text %}
+                    <span class="input-group-text" data-bs-toggle="tooltip" title="{{ form.email.help_text }}">
+                        <i class="fa fa-info-circle text-primary"></i>
+                    </span>
+                {% endif %}
+            </div>
+            <div class="text-danger error-message"></div>
+        </div>
+
+        <!-- Phone Field -->
+        <div class="mb-3">
+            <label class="form-label">Phone</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                {{ form.phone }}
+                {% if form.phone.help_text %}
+                    <span class="input-group-text" data-bs-toggle="tooltip" title="{{ form.phone.help_text }}">
+                        <i class="fa fa-info-circle text-primary"></i>
+                    </span>
+                {% endif %}
+            </div>
+            <div class="text-danger error-message"></div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                {{ form.password1 }}
+                {% if form.password1.help_text %}
+                    <span class="input-group-text" data-bs-toggle="tooltip" title="{{ form.password1.help_text }}">
+                        <i class="fa fa-info-circle text-primary"></i>
+                    </span>
+                {% endif %}
+            </div>
+            <div class="text-danger error-message"></div>
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div class="mb-3">
+            <label class="form-label">Confirm Password</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                {{ form.password2 }}
+                {% if form.password2.help_text %}
+                    <span class="input-group-text" data-bs-toggle="tooltip" title="{{ form.password2.help_text }}">
+                        <i class="fa fa-info-circle text-primary"></i>
+                    </span>
+                {% endif %}
+            </div>
+            <div class="text-danger error-message"></div>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100 btn-custom">Register</button>
+    </form>
+
+    <p class="text-center mt-3">
+        Already have an account? <a href="{% url 'login' %}">Login</a>
+    </p>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Enable Bootstrap tooltips
+      /*  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });*/
+
+        document.getElementById("register-form").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            let formValid = true;
+            let errorMessages = [];
+
+            // Get form fields
+            let username = document.getElementById("id_username");
+            let email = document.getElementById("id_email");
+            let phone = document.getElementById("id_phone");
+            let password1 = document.getElementById("id_password1");
+            let password2 = document.getElementById("id_password2");
+
+            // Clear previous errors
+            document.querySelectorAll(".error-message").forEach(e => e.innerHTML = "");
+            document.querySelectorAll(".is-invalid").forEach(e => e.classList.remove("is-invalid"));
+            document.getElementById("error-summary").classList.add("d-none");
+
+            // Validate Username
+            if (username.value.trim() === "") {
+                formValid = false;
+                errorMessages.push("Username is required.");
+                username.classList.add("is-invalid");
+                //username.nextElementSibling.innerHTML = "Username is required.";
+            }
+
+            // Validate Email
+            let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,6}$/;
+            if (!emailPattern.test(email.value.trim())) {
+                formValid = false;
+                errorMessages.push("Enter a valid email address.");
+                email.classList.add("is-invalid");
+                //email.nextElementSibling.innerHTML = "Enter a valid email.";
+            }
+
+            // Validate Phone (10 digits only)
+            let phonePattern = /^[0-9]{10}$/;
+            if (!phonePattern.test(phone.value.trim())) {
+                formValid = false;
+                errorMessages.push("Phone number must be 10 digits.");
+                phone.classList.add("is-invalid");
+                //phone.nextElementSibling.innerHTML = "Enter a valid 10-digit phone number.";
+            }
+
+            // Validate Password
+            if (password1.value.length < 8) {
+                formValid = false;
+                errorMessages.push("Password must be at least 8 characters.");
+                password1.classList.add("is-invalid");
+                //password1.nextElementSibling.innerHTML = "Password must be at least 8 characters.";
+            }
+
+            // Validate Password Match
+            if (password1.value !== password2.value) {
+                formValid = false;
+                errorMessages.push("Passwords do not match.");
+                password2.classList.add("is-invalid");
+                //password2.nextElementSibling.innerHTML = "Passwords do not match.";
+            }
+
+            // Show all errors at the top
+            if (!formValid) {
+                let errorSummary = document.getElementById("error-summary");
+                errorSummary.innerHTML = "<strong>Please fix the following errors:</strong><ul><li>" + errorMessages.join("</li><li>") + "</li></ul>";
+                errorSummary.classList.remove("d-none");
+            } else {
+                event.target.submit(); // Submit the form if valid
+            }
+        });
+    });
+</script>
+{% endblock %}

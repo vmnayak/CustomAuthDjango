@@ -1,0 +1,33 @@
+{% extends 'auth_base.html' %}
+{% block title %}Login{% endblock %}
+{% block heading %}<i class="fa fa-user-lock"></i> Login{% endblock %}
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label class="form-label">Username / Email / Phone</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="fa fa-user"></i></span>
+            {{ form.username }}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="fa fa-lock"></i></span>
+            {{ form.password }}
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100 btn-custom">Login</button>
+</form>
+
+<div class="text-center mt-3">
+    <a href="{% url 'forgot_password' %}" class="text-decoration-none">Forgot Password?</a>
+</div>
+
+<p class="text-center mt-3">
+    Don't have an account? <a href="{% url 'register' %}">Register</a>
+</p>
+{% endblock %}

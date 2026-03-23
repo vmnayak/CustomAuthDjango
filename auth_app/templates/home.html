@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Modern UI</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    
+    <!-- Font Awesome (For Icons) -->
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    
+</head>
+<body>
+
+    <div class="container">
+        <!-- Display Messages -->
+        {% if messages %}
+            <div class="alert-container">
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show text-center" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Glassmorphic Card -->
+        <div class="glass-card">
+            <h1 class="mb-3">Welcome</h1>
+
+            {% if user.is_authenticated %}
+                <p class="lead">Hello, {{ user.username|default:user.email|default:user.phone }}!</p>
+                <a href="{% url 'logout' %}" class="btn-custom">Logout</a>
+            {% else %}
+                <p class="lead">You are not logged in.</p>
+                <a href="{% url 'login' %}" class="btn-custom">Login</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+</html>

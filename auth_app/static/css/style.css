@@ -1,0 +1,80 @@
+/* Ensure the page takes full height and is scrollable */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto; /* Allow full-page scrolling */
+    background-color: #f8f9fa; /* Light gray background */
+}
+
+.login-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+/* button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px;
+} */
+
+.home-container {
+    text-align: center;
+    margin-top: 50px;
+}
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* Modern Glassmorphism Effect */
+.glass-card {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    width: 100%;
+    max-width: 500px; /* Keep form compact */
+    padding: 25px;
+}
+
+.form-control {
+    border-radius: 10px;
+    padding: 10px 15px;
+}
+
+.btn-custom {
+    border-radius: 10px;
+    padding: 12px;
+    font-weight: bold;
+}
+
+
+.btn-custom:hover {
+    transform: scale(1.05);
+}
+
+.input-group-text {
+    background: #f8f9fa;
+    border-radius: 10px 0 0 10px;
+}
+
+
+.auth-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px; /* Prevent content from sticking to edges */
+}
